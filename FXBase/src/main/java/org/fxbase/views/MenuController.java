@@ -1,5 +1,9 @@
 package org.fxbase.views;
 
+import javax.inject.Inject;
+
+import org.services.TestService;
+
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -13,11 +17,14 @@ public class MenuController extends BaseControler {
 
 	@FXML
 	private MenuItem mClose;
+	
+	@Inject
+	private TestService service;
 
 	 
 	
 	@FXML
-	void onClose(ActionEvent event) {
+	void onClose(ActionEvent event) {	
 		Platform.exit();
 	}
 

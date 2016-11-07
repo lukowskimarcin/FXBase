@@ -2,7 +2,6 @@ package org.fxbase.views;
 
 import java.io.FileInputStream;
 import java.io.InputStream;
-import java.net.URL;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.logging.Level;
@@ -11,11 +10,12 @@ import java.util.logging.Logger;
 import javax.enterprise.event.Observes;
 import javax.inject.Inject;
 
+import org.fxbase.cdi.CDIUtil;
 import org.fxbase.cdi.StartupScene;
+import org.services.TestService;
 
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
-import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.layout.BorderPane;
 import javafx.stage.Stage;
@@ -33,20 +33,21 @@ public class AppControler {
 	
 	private Stage stage;
 	
+	@Inject
+	private TestService service;
+	
 	
 	public void launchJavaFXApplication(@Observes @StartupScene Stage primaryStage) {
 		try {
 			stage = primaryStage;
 			InputStream is = getClass().getResourceAsStream("Main.fxml");
-			Parent root = (Parent) fxmlLoader.load(is);
+			root = (BorderPane) fxmlLoader.load(is);
 
 			Scene scene = new Scene(root, 640, 480);
 			scene.getStylesheets().add(getClass().getResource("application.css").toExternalForm());
 			
 			JFXView menu = load(MenuController.class, false);
-			
 			setTopNode(menu);
-			
 			
 			
 			primaryStage.setScene(scene);
@@ -59,7 +60,6 @@ public class AppControler {
 	
 	public JFXView load(Class<? extends BaseControler> clazz, boolean reload)  {
 		JFXView form = null;
-		
 		try {
 			BaseControler base = clazz.newInstance();
 			String fxmlPath = base.getFxml();
@@ -69,10 +69,11 @@ public class AppControler {
 			}
 			
 			if(form==null) {
-				
 				InputStream is = new FileInputStream(fxmlPath);
 				
 				FXMLLoader loader = new FXMLLoader();
+				CDIUtil.instance().injectAndConstruct(loader);
+				
 				Node node = null;
 				node = loader.load(is);
 
