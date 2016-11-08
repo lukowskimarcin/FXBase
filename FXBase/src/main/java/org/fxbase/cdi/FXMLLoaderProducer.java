@@ -7,7 +7,6 @@ import javax.enterprise.inject.*;
 import javax.inject.Inject;
 
 public class FXMLLoaderProducer {
-	@Inject Instance<Object> instance;
 	
 	@Produces
 	public FXMLLoader createLoader() {
@@ -15,7 +14,7 @@ public class FXMLLoaderProducer {
 		loader.setControllerFactory(new Callback<Class<?>, Object>() {
 			@Override
 			public Object call(Class<?> param) {
-				return instance.select(param).get();
+				return CDIUtil.instance().getWeldContainer().select(param).get();
 			}
 		});
 		return loader;

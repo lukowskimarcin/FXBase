@@ -19,6 +19,7 @@ import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.layout.BorderPane;
 import javafx.stage.Stage;
+import javafx.util.Callback;
 
 public class AppControler {
 	
@@ -72,7 +73,14 @@ public class AppControler {
 				InputStream is = new FileInputStream(fxmlPath);
 				
 				FXMLLoader loader = new FXMLLoader();
-				CDIUtil.instance().injectAndConstruct(loader);
+				loader.setControllerFactory(new Callback<Class<?>, Object>() {
+					@Override
+					public Object call(Class<?> param) {
+						return CDIUtil.instance().getWeldContainer().select(param).get();
+					}
+				});
+				
+				
 				
 				Node node = null;
 				node = loader.load(is);

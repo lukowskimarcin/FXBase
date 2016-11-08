@@ -25,6 +25,7 @@ public class MenuController extends BaseControler {
 	
 	@FXML
 	void onClose(ActionEvent event) {	
+		service.print();
 		Platform.exit();
 	}
 
