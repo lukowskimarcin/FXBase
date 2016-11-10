@@ -51,6 +51,9 @@ public class AppControler {
 			setTopNode(menu);
 			
 			
+			JFXView center = load(TestControler.class, false);
+			setCenterNode(center);
+			
 			primaryStage.setScene(scene);
 			primaryStage.show();
 		} catch (Exception ex) {
@@ -79,8 +82,6 @@ public class AppControler {
 						return CDIUtil.instance().getWeldContainer().select(param).get();
 					}
 				});
-				
-				
 				
 				Node node = null;
 				node = loader.load(is);
