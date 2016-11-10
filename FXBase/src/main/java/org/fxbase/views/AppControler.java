@@ -12,7 +12,6 @@ import javax.inject.Inject;
 
 import org.fxbase.cdi.CDIUtil;
 import org.fxbase.cdi.StartupScene;
-import org.services.TestService;
 
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
@@ -21,22 +20,18 @@ import javafx.scene.layout.BorderPane;
 import javafx.stage.Stage;
 import javafx.util.Callback;
 
-public class AppControler {
+public   class AppControler {
 	
 	private static final Logger log = Logger.getLogger(AppControler.class.getName());   
 	
 	@Inject 
 	private FXMLLoader fxmlLoader;
 	
-	private Map<String, JFXView> controlers = new HashMap<String, JFXView>();
+	protected Map<String, JFXView> controlers = new HashMap<String, JFXView>();
 	
-	private BorderPane root;
+	protected BorderPane root;
 	
-	private Stage stage;
-	
-	@Inject
-	private TestService service;
-	
+	protected Stage stage;
 	
 	public void launchJavaFXApplication(@Observes @StartupScene Stage primaryStage) {
 		try {
@@ -47,12 +42,10 @@ public class AppControler {
 			Scene scene = new Scene(root, 640, 480);
 			scene.getStylesheets().add(getClass().getResource("application.css").toExternalForm());
 			
-			JFXView menu = load(MenuController.class, false);
-			setTopNode(menu);
+			//init();
 			
+			setTopNode(load(MenuController.class));
 			
-			JFXView center = load(TestControler.class, false);
-			setCenterNode(center);
 			
 			primaryStage.setScene(scene);
 			primaryStage.show();
@@ -61,6 +54,12 @@ public class AppControler {
 		}
 	}
 	
+	//public abstract void init();
+	
+	
+	public JFXView load(Class<? extends BaseControler> clazz )  {
+		return load(clazz, true);
+	}
 	
 	public JFXView load(Class<? extends BaseControler> clazz, boolean reload)  {
 		JFXView form = null;
@@ -69,7 +68,7 @@ public class AppControler {
 			String fxmlPath = base.getFxml();
 			
 			if(!reload) {
-				form = controlers.get(base.getName());
+				form = controlers.get(clazz.getName());
 			}
 			
 			if(form==null) {
@@ -85,23 +84,22 @@ public class AppControler {
 				
 				Node node = null;
 				node = loader.load(is);
-
+				
 				BaseControler controler = loader.getController();
 				controler.setAppControler(this);
 
 				form = new JFXView(node, controler);
-				controlers.put(controler.getName(), form);
+				controlers.put(clazz.getName(), form);
 			}
 
-		} catch (Exception e) {
-			e.printStackTrace();
+		} catch (Exception ex) {
+			log.log(Level.SEVERE, "load", ex);
 		}
-
 		return form;
 	}
 	
-	public void setCenterNode(JFXView form) {
-		root.setCenter(form.getNode());
+	public void setCenterNode(JFXView center) {
+		root.setCenter(center.getNode());
 	}
 	
 	public void setTopNode(JFXView menu) {
@@ -120,15 +118,9 @@ public class AppControler {
 		root.setLeft(right.getNode()); 
 	}
 	
-	
 	public Stage getStage() {
 		return stage;
 	}
-	
-	public void setStage(Stage stage) {
-		this.stage = stage;
-	}
-
 
 	public BorderPane getRoot() {
 		return root;
@@ -138,5 +130,9 @@ public class AppControler {
 		this.root = root;
 	}
 	
+	
+	public Map<String, JFXView> getControlers() {
+		return controlers;
+	}
 	
 }

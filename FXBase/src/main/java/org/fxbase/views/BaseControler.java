@@ -1,10 +1,10 @@
 package org.fxbase.views;
 
+import java.util.Map;
 
-public class BaseControler {
+public class BaseControler   {
 
 	protected AppControler appControler;
-	protected String name;
 	protected String fxml;
 	
 	/**
@@ -12,17 +12,8 @@ public class BaseControler {
 	 * @param name	nazwa formatki
 	 * @param fxml	sciezka do pliku FXML formatki
 	 */
-	public BaseControler(String name, String fxml ) {
-		this.name = name;
+	public BaseControler(String fxml ) {
 		this.fxml = fxml;
-	}
-
-	public String getName() {
-		return name;
-	}
-
-	public void setName(String name) {
-		this.name = name;
 	}
 
 	public String getFxml() {
@@ -41,4 +32,31 @@ public class BaseControler {
 		this.appControler = appControler;
 	}
 	
+	public void receiveMessage(Message message) {
+		
+	}
+	
+	public boolean sendMessage(Class<? extends BaseControler> receiver, Message message) {
+		boolean result = false;
+		Map<String, JFXView> controlers = appControler.getControlers();
+		
+		if(	controlers.containsKey(receiver.getName()) && message != null) {
+			message.setSender(this);
+			BaseControler controler = controlers.get(receiver.getName()).getControler();
+			controler.receiveMessage(message);
+			result = true;
+		}
+		return result;
+	}
+	
+	public void sendMessageAll(Message message) {
+		Map<String, JFXView> controlers = appControler.getControlers();
+		
+		controlers.forEach((key, view) -> {
+			if(!key.equals(getClass().getName())) {
+				view.getControler().receiveMessage(message);
+			}
+		});
+		
+	}
 }

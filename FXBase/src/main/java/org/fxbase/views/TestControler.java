@@ -12,10 +12,9 @@ public class TestControler extends BaseControler {
 
 	@FXML
 	private Button button;
-
 	
 	public TestControler() {
-		super("TestControler", "src/main/java/org/fxbase/views/TestControler.fxml");
+		super(  "src/main/java/org/fxbase/views/TestControler.fxml");
 	}
 
 	@Inject
@@ -27,12 +26,19 @@ public class TestControler extends BaseControler {
 	@FXML
 	void onButton(ActionEvent event)   {
 		
-		System.out.println(value);
+		Message message = new Message("wiadomoc 1");
+		if(!sendMessage(TestControler2.class, message)) {
+			System.out.println("nie dostarczona");
+		};
 		
 		JFXView form = appControler.load(TestControler2.class, true);
 		appControler.setCenterNode(form);
 	}
 
-	
+	@Override
+	public void receiveMessage(Message message) {
+		System.out.println("TestControler Odebrana :" + message.getData());
+		
+	}
 	 
 }

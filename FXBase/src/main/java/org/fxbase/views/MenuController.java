@@ -12,7 +12,7 @@ import javafx.scene.control.MenuItem;
 public class MenuController extends BaseControler {
 
 	public MenuController() {
-		super("MenuController", "src/main/java/org/fxbase/views/MenuControler.fxml");
+		super(  "src/main/java/org/fxbase/views/MenuControler.fxml");
 	}
 
 	@FXML

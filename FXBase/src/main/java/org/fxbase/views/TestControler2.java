@@ -15,7 +15,7 @@ public class TestControler2 extends BaseControler {
 
 	
 	public TestControler2() {
-		super("TestControler2", "src/main/java/org/fxbase/views/TestControler2.fxml");
+		super( "src/main/java/org/fxbase/views/TestControler2.fxml");
 	}
 	
 
@@ -26,12 +26,18 @@ public class TestControler2 extends BaseControler {
 	
 	@FXML
 	void onButton(ActionEvent event)   {
-		System.out.println(value);
+		Message message = new Message("wiadomoc 22");
+		sendMessage(TestControler.class, message);
 		
 		JFXView form = appControler.load(TestControler.class, true);
 		appControler.setCenterNode(form);
 	}
 
+	@Override
+	public void receiveMessage(Message message) {
+		System.out.println("TestControler2 Odebrana :" + message.getData());
+		
+	}
 	
 	 
 }
