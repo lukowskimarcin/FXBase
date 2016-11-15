@@ -8,13 +8,7 @@ import javax.enterprise.util.AnnotationLiteral;
 import org.jboss.weld.environment.se.*;
 
 public class WeldJavaFXLauncher extends Application {
-    /**
-     * Nothing special, we just use the JavaFX Application methods to boostrap
-     * JavaFX
-     */
-    public static void main(String[] args) {
-        Application.launch(WeldJavaFXLauncher.class, args);
-    }
+    
 
     @SuppressWarnings("serial")
     @Override

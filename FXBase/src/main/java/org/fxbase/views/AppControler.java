@@ -7,11 +7,8 @@ import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import javax.enterprise.event.Observes;
-import javax.inject.Inject;
 
 import org.fxbase.cdi.CDIUtil;
-import org.fxbase.cdi.StartupScene;
 
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
@@ -20,12 +17,9 @@ import javafx.scene.layout.BorderPane;
 import javafx.stage.Stage;
 import javafx.util.Callback;
 
-public   class AppControler {
+public class AppControler  {
 	
-	private static final Logger log = Logger.getLogger(AppControler.class.getName());   
-	
-	@Inject 
-	private FXMLLoader fxmlLoader;
+	protected static final Logger log = Logger.getLogger(AppControler.class.getName());   
 	
 	protected Map<String, JFXView> controlers = new HashMap<String, JFXView>();
 	
@@ -33,19 +27,16 @@ public   class AppControler {
 	
 	protected Stage stage;
 	
-	public void launchJavaFXApplication(@Observes @StartupScene Stage primaryStage) {
+	public void launchJavaFXApplication(Stage primaryStage) {
 		try {
 			stage = primaryStage;
-			InputStream is = getClass().getResourceAsStream("Main.fxml");
-			root = (BorderPane) fxmlLoader.load(is);
-
-			Scene scene = new Scene(root, 640, 480);
-			scene.getStylesheets().add(getClass().getResource("application.css").toExternalForm());
+			root = new BorderPane();
 			
-			//init();
+			stage.setTitle(getTitle());
 			
-			setTopNode(load(MenuController.class));
+			Scene scene = new Scene(root, getWindowWidth(), getWindowHeight());
 			
+			init();
 			
 			primaryStage.setScene(scene);
 			primaryStage.show();
@@ -54,7 +45,21 @@ public   class AppControler {
 		}
 	}
 	
-	//public abstract void init();
+ 	public  void init() {
+ 		
+ 	};
+	
+	public String getTitle() {
+		return null;
+	};
+	
+	public int getWindowWidth(){
+		return 640;
+	}
+	
+	public int getWindowHeight(){
+		return 480;
+	}
 	
 	
 	public JFXView load(Class<? extends BaseControler> clazz )  {
