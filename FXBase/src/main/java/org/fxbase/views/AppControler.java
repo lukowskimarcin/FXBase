@@ -21,7 +21,7 @@ public class AppControler  {
 	
 	protected static final Logger log = Logger.getLogger(AppControler.class.getName());   
 	
-	protected Map<String, JFXView> controlers = new HashMap<String, JFXView>();
+	protected Map<String, JFXView<BaseControler>> controlers = new HashMap<String, JFXView<BaseControler>>();
 	
 	protected BorderPane root;
 	
@@ -62,12 +62,12 @@ public class AppControler  {
 	}
 	
 	
-	public JFXView load(Class<? extends BaseControler> clazz )  {
+	public JFXView  load(Class<? extends BaseControler> clazz )  {
 		return load(clazz, true);
 	}
 	
 	public JFXView load(Class<? extends BaseControler> clazz, boolean reload)  {
-		JFXView form = null;
+		JFXView<BaseControler> form = null;
 		try {
 			BaseControler base = clazz.newInstance();
 			String fxmlPath = base.getFxml();
@@ -103,23 +103,23 @@ public class AppControler  {
 		return form;
 	}
 	
-	public void setCenterNode(JFXView center) {
+	public void setCenterNode(JFXView<?> center) {
 		root.setCenter(center.getNode());
 	}
 	
-	public void setTopNode(JFXView menu) {
+	public void setTopNode(JFXView<?> menu) {
 		root.setTop(menu.getNode());
 	}
 	
-	public void setBottomNode(JFXView bottom) {
+	public void setBottomNode(JFXView<?> bottom) {
 		root.setBottom(bottom.getNode());
 	}
 	
-	public void setLeftNode(JFXView left) {
+	public void setLeftNode(JFXView<?> left) {
 		root.setLeft(left.getNode()); 
 	}
 	
-	public void setRightNode(JFXView right) {
+	public void setRightNode(JFXView<?> right) {
 		root.setLeft(right.getNode()); 
 	}
 	
@@ -136,7 +136,7 @@ public class AppControler  {
 	}
 	
 	
-	public Map<String, JFXView> getControlers() {
+	public Map<String, JFXView<BaseControler>> getControlers() {
 		return controlers;
 	}
 	

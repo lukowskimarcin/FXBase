@@ -2,13 +2,13 @@ package org.fxbase.views;
 
 import javafx.scene.Node;
 
-public class JFXView {
+public class JFXView<T extends BaseControler> {
 	
 	private Node node;
 	
-	private BaseControler controler;
+	private T controler;
 	
-	public JFXView(Node node, BaseControler controler){
+	public JFXView(Node node, T controler){
 		this.node = node;
 		this.controler = controler;
 	}
@@ -21,11 +21,11 @@ public class JFXView {
 		this.node = node;
 	}
 
-	public BaseControler getControler() {
+	public T getControler() {
 		return controler;
 	}
 
-	public void setControler(BaseControler controler) {
+	public void setControler(T controler) {
 		this.controler = controler;
 	}
 	

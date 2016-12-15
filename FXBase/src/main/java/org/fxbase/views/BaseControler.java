@@ -38,7 +38,7 @@ public class BaseControler   {
 	
 	public boolean sendMessage(Class<? extends BaseControler> receiver, Message message) {
 		boolean result = false;
-		Map<String, JFXView> controlers = appControler.getControlers();
+		Map<String, JFXView<BaseControler>> controlers = appControler.getControlers();
 		
 		if(	controlers.containsKey(receiver.getName()) && message != null) {
 			message.setSender(this);
@@ -50,7 +50,7 @@ public class BaseControler   {
 	}
 	
 	public void sendMessageAll(Message message) {
-		Map<String, JFXView> controlers = appControler.getControlers();
+		Map<String, JFXView<BaseControler>> controlers = appControler.getControlers();
 		
 		controlers.forEach((key, view) -> {
 			if(!key.equals(getClass().getName())) {
