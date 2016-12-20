@@ -24,7 +24,6 @@ public class DialogsUtil {
 		
 	private Alert alert = null;
 	
-	private static DialogsUtil instance;
 	
 	private DialogsUtil() {
 		alert = new Alert(AlertType.NONE);
@@ -38,29 +37,29 @@ public class DialogsUtil {
 	}
 	
 	public static DialogsUtil create() {
-		instance = new DialogsUtil();
+		DialogsUtil instance = new DialogsUtil();
 		return instance.headerText(null);
 	}
 	
 	public DialogsUtil owner(Stage stage) {
 		alert.initModality(Modality.WINDOW_MODAL);
 		alert.initOwner(stage.getOwner());
-		return instance;
+		return this;
 	}
 	
 	public  DialogsUtil headerText(String headerText) {
 		alert.setHeaderText(headerText);
-		return instance;
+		return this;
 	}
 	
 	public DialogsUtil title(String title) {
 		alert.setTitle(title);
-		return instance;
+		return this;
 	}
 	
 	public DialogsUtil message(String message) {
 		alert.setContentText(message);
-		return instance;
+		return this;
 	}
 	
 	public void showInformation() {
